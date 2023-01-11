@@ -31,7 +31,7 @@ const createDivsForChars = (word) => {
 const generateLetterButtons = () => {
   const letterButtonContainer = document.querySelector('#letter-buttons');
   for (const char of ALPHABET) {
-    letterButtonContainer.insertAdjacentHTML('beforeend', `<button>${char}</button>`);
+    letterButtonContainer.insertAdjacentHTML('beforeend', `<button class='guesser'>${char}</button>`);
   }
 };
 
@@ -50,7 +50,10 @@ const isLetterInWord = (letter) => document.querySelector(`div.${letter}`) !== n
 // Called when `letter` is in word. Update contents of divs with `letter`.
 //
 const handleCorrectGuess = (letter) => {
-  // Replace this with your code
+// change innerHTML div that corresponds with correctly guessed letter
+// add text to "div blank"
+  const correctLetter = document.querySelectorAll(`.${letter}`)
+  correctLetter.innerHTML = `${letter}`;
 };
 
 //
@@ -78,10 +81,23 @@ const resetGame = () => {
 
   createDivsForChars(word);
   generateLetterButtons();
+  // if letter is in word
+  // set variable equal to correct or wrong guess
+  // use that variable as second argument in for loop event listener
 
-  for (const button of document.querySelectorAll('button')) {
-    // add an event handler to handle clicking on a letter button
-    // YOUR CODE HERE
+
+  const letterGuessButtons = document.querySelectorAll('button.guesser')
+
+  for (const letterGuessButton of letterGuessButtons) {
+    letterGuessButton.addEventListener('click', (evt) => {
+      const button = evt.target;
+      if (word.includes(evt.target.innerHTML)) {
+        handleCorrectGuess(evt.target.innerHTML);
+      }
+      else {
+        handleWrongGuess()
+      } 
+    });
   }
 
   // add an event handler to handle clicking on the Play Again button
